@@ -235,6 +235,8 @@ export default function GamePage() {
                     bestPct={best[levelId] || 0}
                     attempt={attempts[levelId] || 1}
                     cause={death.cause}
+                    levelId={levelId}
+                    levelLength={level?.length}
                     onRetry={restart}
                     onMenu={() => nav('/')}
                 />
