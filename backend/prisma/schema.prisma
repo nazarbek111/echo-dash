@@ -1,0 +1,205 @@
+// Echo Dash Prisma schema
+// Provider: SQLite for dev — switch to "postgresql" for production.
+// All models are compatible with both. JSON fields are stored as TEXT under SQLite.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// -------------------- USERS --------------------
+model User {
+  id             String   @id @default(cuid())
+  username       String   @unique
+  email          String   @unique
+  passwordHash   String
+  country        String
+  region         String
+  avatarSkinId   String   @default("cyan")
+  selectedSkinId String   @default("cyan")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  lastLoginAt    DateTime?
+
+  settings      UserSettings?
+  stats         UserStats?
+  runs          Run[]
+  replays       Replay[]
+  achievements  UserAchievement[]
+  skins         UserSkin[]
+  dailyRuns     DailyRun[]
+}
+
+model UserSettings {
+  id            String  @id @default(cuid())
+  userId        String  @unique
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sound         Boolean @default(true)
+  showGhost     Boolean @default(true)
+  particles     Boolean @default(true)
+  screenShake   Boolean @default(true)
+  reducedMotion Boolean @default(false)
+}
+
+model UserStats {
+  id                  String @id @default(cuid())
+  userId              String @unique
+  user                User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalAttempts       Int    @default(0)
+  totalDeaths         Int    @default(0)
+  totalJumps          Int    @default(0)
+  totalPlayTimeMs     Int    @default(0)
+  bestDemoProgress    Float  @default(0)
+  bestFullProgress    Float  @default(0)
+  bestDailyProgress   Float  @default(0)
+  bestDemoTimeMs      Int?
+  bestFullTimeMs      Int?
+  completedRuns       Int    @default(0)
+  averageProgress     Float  @default(0)
+  favoriteSkinId      String @default("cyan")
+  deathsByZone        String @default("{}") // JSON: {blue,purple,red,white}
+  attemptsByLevel     String @default("{}") // JSON
+  updatedAt           DateTime @updatedAt
+}
+
+// -------------------- RUNS --------------------
+model Run {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mode               String   // "demo" | "full" | "daily" | custom level key
+  levelId            String
+  percent            Float    // 0..1
+  completed          Boolean  @default(false)
+  completionTimeMs   Int      @default(0)
+  survivedTimeMs     Int      @default(0)
+  attemptsAtRun      Int      @default(1)
+  jumps              Int      @default(0)
+  deaths             Int      @default(0)
+  deathCause         String?
+  deathZone          String?
+  speedPortalsPassed Int      @default(0)
+  skinId             String   @default("cyan")
+  country            String
+  region             String
+  replayId           String?
+  replay             Replay?  @relation(fields: [replayId], references: [id])
+  createdAt          DateTime @default(now())
+
+  @@index([mode, percent])
+  @@index([mode, completionTimeMs])
+  @@index([country, mode])
+  @@index([region, mode])
+  @@index([userId, mode])
+}
+
+// -------------------- REPLAYS --------------------
+model Replay {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  levelId     String
+  mode        String
+  data        String   // JSON-compressed array of [d,y,r] tuples
+  percent     Float
+  completed   Boolean  @default(false)
+  durationMs  Int      @default(0)
+  createdAt   DateTime @default(now())
+  runs        Run[]
+
+  @@index([levelId, percent])
+  @@index([userId, levelId])
+}
+
+// -------------------- ACHIEVEMENTS --------------------
+model Achievement {
+  id          String @id @default(cuid())
+  key         String @unique
+  name        String
+  description String
+  rarity      String // common|rare|epic|legendary
+  icon        String @default("🏆")
+  unlocks     UserAchievement[]
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+  unlockedAt    DateTime @default(now())
+  progress      Float    @default(1)
+
+  @@unique([userId, achievementId])
+}
+
+// -------------------- SKINS --------------------
+model Skin {
+  id              String  @id @default(cuid())
+  key             String  @unique
+  name            String
+  rarity          String
+  primaryColor    String
+  secondaryColor  String
+  glowColor       String
+  unlockCondition String  // human-readable; gameplay-side check is in code
+  users           UserSkin[]
+}
+
+model UserSkin {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skinId     String
+  skin       Skin     @relation(fields: [skinId], references: [id])
+  unlockedAt DateTime @default(now())
+
+  @@unique([userId, skinId])
+}
+
+// -------------------- LEVELS / DAILY --------------------
+model Level {
+  id                   String @id @default(cuid())
+  key                  String @unique
+  name                 String
+  difficulty           String
+  mode                 String
+  description          String
+  estimatedDurationSec Int    @default(60)
+}
+
+model DailyChallenge {
+  id         String   @id @default(cuid())
+  date       String   @unique // YYYY-MM-DD
+  seed       String
+  name       String
+  difficulty String
+  levelData  String   // JSON
+  createdAt  DateTime @default(now())
+  runs       DailyRun[]
+}
+
+model DailyRun {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dailyId          String
+  daily            DailyChallenge @relation(fields: [dailyId], references: [id], onDelete: Cascade)
+  date             String   // YYYY-MM-DD (denormalized for fast index)
+  percent          Float
+  completionTimeMs Int      @default(0)
+  attemptsAtRun    Int      @default(1)
+  skinId           String   @default("cyan")
+  country          String
+  region           String
+  createdAt        DateTime @default(now())
+
+  @@index([date, percent])
+  @@index([date, completionTimeMs])
+  @@index([userId, date])
+}
