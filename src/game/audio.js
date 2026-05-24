@@ -174,3 +174,58 @@ export function stopMusic() {
     musicNodes.forEach(n => { try { n.stop() } catch {} })
     musicNodes = []
 }
+
+
+// ─── Added for Rhythm & Bullet Time/Rewind ─────────────────────────
+export function getBeatInfo() {
+    if (!ctx || ctx.state === 'suspended') return null
+    return {
+        nextBeatTime: nextBeatTime,
+        BEAT: BEAT,
+        now: ctx.currentTime
+    }
+}
+
+export function rhythmHitSfx(hit) {
+    if (!enabled) return
+    const c = ensureCtx(); if (!c) return
+    const o = c.createOscillator()
+    const g = c.createGain()
+    o.type = 'triangle'
+    const freq = hit === 'perfect' ? 880 : 523.25
+    o.frequency.setValueAtTime(freq, c.currentTime)
+    o.frequency.exponentialRampToValueAtTime(freq * 1.5, c.currentTime + 0.08)
+    g.gain.setValueAtTime(0.12, c.currentTime)
+    g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.1)
+    o.connect(g).connect(masterGain)
+    o.start(); o.stop(c.currentTime + 0.12)
+}
+
+export function bulletTimeSfx() {
+    if (!enabled) return
+    const c = ensureCtx(); if (!c) return
+    const o = c.createOscillator()
+    const g = c.createGain()
+    o.type = 'sawtooth'
+    o.frequency.setValueAtTime(220, c.currentTime)
+    o.frequency.exponentialRampToValueAtTime(55, c.currentTime + 0.4)
+    g.gain.setValueAtTime(0.2, c.currentTime)
+    g.gain.linearRampToValueAtTime(0.001, c.currentTime + 0.4)
+    o.connect(g).connect(masterGain)
+    o.start(); o.stop(c.currentTime + 0.4)
+}
+
+export function rewindSfx() {
+    if (!enabled) return
+    const c = ensureCtx(); if (!c) return
+    const o = c.createOscillator()
+    const g = c.createGain()
+    o.type = 'sine'
+    o.frequency.setValueAtTime(110, c.currentTime)
+    o.frequency.exponentialRampToValueAtTime(1760, c.currentTime + 0.35)
+    g.gain.setValueAtTime(0.01, c.currentTime)
+    g.gain.linearRampToValueAtTime(0.18, c.currentTime + 0.25)
+    g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.35)
+    o.connect(g).connect(masterGain)
+    o.start(); o.stop(c.currentTime + 0.36)
+}

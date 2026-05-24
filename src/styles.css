@@ -1051,3 +1051,50 @@ canvas.game {
     border-radius: 50%;
     flex-shrink: 0;
 }
+
+/* =============================================
+   HUD JUMPS INDICATOR
+   ============================================= */
+.jumps-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: rgba(5, 8, 22, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+    align-self: flex-start;
+    pointer-events: none;
+}
+
+.jumps-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.jump-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.jump-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: none;
+    transition: background 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+
+.jump-dot.on {
+    background: var(--cyan);
+    border-color: #fff;
+    box-shadow: 0 0 10px var(--cyan), 0 0 20px var(--cyan);
+}
