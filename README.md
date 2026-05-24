@@ -1,147 +1,182 @@
-# ECHO DASH
+# ⚡ ECHO DASH ⚡
 
-> **Run · Die · Remember · Repeat**
+<p align="center">
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/HTML5_Canvas-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="Canvas" />
+  <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express" />
+  <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white" alt="Prisma" />
+  <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
+</p>
+
+> **Run · Die · Remember · Rewind · Repeat**
 >
-> A neon cyberpunk rhythm runner built with React + Vite + Canvas.
+> Премиальный неоновый киберпанк ритм-раннер нового поколения, сочетающий в себе механику *Geometry Dash*, перемотку времени, точные ритм-комбо и глобальные облачные соревнования!
 
-Echo Dash is a Geometry Dash-style auto-runner with three original signature features:
-
-1. **Ghost Replay** — your best previous run plays back as a translucent ghost beside you.
-2. **Beat Pulse World** — every visual element pulses to a synthetic beat (background glow, grid, obstacles, particles, UI).
-3. **Level Mood System** — the world transforms across 4 atmosphere zones as you progress: Blue → Purple Glitch → Red Danger → White Finale.
+**Echo Dash** — это не просто раннер, а захватывающий аудиовизуальный перформанс, построенный на чистом HTML5 Canvas 2D и процедурном синтезе звука Web Audio API. В игре полностью отсутствует внешняя загрузка аудио-ассетов — вся музыка и звуковые эффекты генерируются кодом на лету!
 
 ---
 
-## Quick start
+## 🔥 Уникальные Киллер-Фичи (Signature Features)
 
-```bash
-npm install
-npm run dev
-```
+### 1. ⏱️ Bullet Time & Rewind (Второй Шанс)
+* **Замедление времени**: При фатальном столкновении с препятствием или падении игра не обрывается сразу. На короткое мгновение (`0.8 сек`) мир замедляется на 90% (эффект *Bullet Time*). На экране вспыхивает индикатор **⏮ REWIND?**.
+* **Перемотка назад**: Нажмите `Space` или кликните по экрану во время замедления, чтобы мгновенно отмотать время на **2 секунды назад**!
+* **Высокая точность (High-Fidelity)**: Механика сохраняет и восстанавливает всё состояние мира: точные координаты, текущую скорость, направление гравитации, инверсию и количество доступных прыжков.
 
-Then open [http://localhost:5173](http://localhost:5173).
+### 2. 🎵 Rhythm Combo System (Ритм-Геймплей)
+* **Точные ритм-проверки**: Каждый ваш прыжок анализируется и сопоставляется с текущей сильной долей процедурного бита:
+    * `±80мс` — **PERFECT!** (+3 очка к счету)
+    * `±145мс` — **GOOD** (+1 очко к счету)
+* **Визуальный отклик**: На экране генерируются расширяющиеся круги (синие для Perfect, зеленые для Good) и всплывающие 3D-надписи.
+* **Комбо-аура (Streak Aura)**: Наберите комбо-серию из 5 успешных ритм-прыжков, чтобы кубик окружила мощная пульсирующая фиолетовая или золотая неоновая аура!
 
-### Other scripts
+### 3. 🌀 Gravity Portal & Double Jump
+* **Инверсия гравитации**: Специальные фиолетовые порталы мгновенно переворачивают мир, позволяя вам бежать по потолку и приземляться на нижние грани платформ.
+* **Двойной прыжок (Double Jump)**: Используйте второй прыжок в воздухе с красивым шлейфом искр.
+* **Индикаторы HUD**: На кубе и на панели управления отображаются неоновые точки-заряды прыжков. При первом прыжке одна гаснет, при втором — обе. Приземление мгновенно перезаряжает индикаторы.
 
-```bash
-npm run build     # production build → dist/
-npm run preview   # preview the production build locally
-```
+### 4. 🪦 Death Graveyard (Кладбище Смертей)
+* Настоящие призрачные маркеры смертей (**Death Echoes**) отображаются прямо на уровне в местах ваших предыдущих аварий, показывая ваш прогресс в реальном времени.
+* Интерактивная карта "Кладбища" на экране GameOver детально показывает распределение ваших аварий по зонам уровня.
 
----
+### 5. 👻 Ghost Replay (Призрачный Повтор)
+* Ваша лучшая попытка записывается в реальном времени. Во время следующего забега рядом с вами бежит полупрозрачный призрачный куб, в точности повторяя все движения вашего лучшего результата.
 
-## Controls
-
-| Action  | Input                              |
-|---------|------------------------------------|
-| Jump    | `Space` · Mouse Click · Touch/Tap  |
-| Restart | `R` (after death)                  |
-| Mute    | `M` · 🔊 button in HUD             |
-| Menu    | `Esc` (during play / overlays)     |
-
----
-
-## Levels
-
-| Mode         | Length     | Obstacles | Time   |
-|--------------|------------|-----------|--------|
-| **Demo Run** | 37,500 px  | 90        | ~1:13  |
-| **Full Run** | 91,680 px  | 232       | ~3:00  |
-
-Both levels traverse all four mood zones with handcrafted rhythm patterns: spike trains, double/triple spikes, alternating waves, staircases, platform corridors, gap traps, mover swarms, glitch sections, and speed portals.
+### 6. 📅 Procedural Daily Challenge
+* Ежедневно генерируемый уровень на основе уникального хэша даты (seed) через генератор *Mulberry32*. Все игроки мира соревнуются на одном уникальном треке, который обновляется ровно в полночь по UTC!
 
 ---
 
-## Project structure
+## 🎮 Управление (Controls)
 
-```
+| Действие | Клавиатура | Мышь / Тачпад |
+|:---|:---|:---|
+| **Прыжок / Двойной Прыжок** | `Space` / `ArrowUp` | Левый клик / Касание |
+| **Перемотка времени (в слоу-мо)** | `Space` | Клик / Касание |
+| **Быстрый перезапуск** | `R` (после смерти) | Кнопка "Retry" |
+| **Вкл/Выкл звук** | `M` | Кнопка 🔊 в HUD |
+
+---
+
+## 🗺️ Атмосферные Зоны (Level Mood System)
+
+Цвета и эффекты мира плавно перетекают из одного в другой по мере вашего продвижения по уровню:
+
+| Прогресс | Зона | Цвет | Атмосфера и Ритм |
+| :--- | :--- | :--- | :--- |
+| **0% – 30%** | **Blue Zone** | 🟦 Голубой | Спокойный старт, ровный пульс (`1.6 Hz`) |
+| **30% – 60%** | **Purple Glitch** | 🟪 Розовый/Фиолетовый | Эффекты аналоговых помех, глитчи (`2.0 Hz`) |
+| **60% – 85%** | **Danger Zone** | 🟥 Красный | Быстрый темп, сильная тряска экрана (`2.6 Hz`) |
+| **85% – 100%** | **White Finale** | ⬜ Белый | Экстремальная скорость, сияние неона (`3.2 Hz`) |
+
+---
+
+## 🎨 Скины и Локальные Лиги (Skins & Regional Leaderboards)
+
+В игре присутствует кастомизация куба с возможностью разблокировки эксклюзивных скинов за достижения на бэкенде:
+* **Cyan Core** — базовый скин.
+* **Purple Pulse** — достичь 30% на любом уровне.
+* **Red Glitch** — достичь 60% на любом уровне.
+* **Gold Runner** — пройти демонстрационный уровень Demo Run.
+* **Kazakhstan Neon** (Бирюзово-золотой скин) — занять ТОП-50 в рейтинге Казахстана 🇰🇿.
+* **Almaty Pulse** (Оранжево-голубой скин) — занять ТОП-25 в региональном рейтинге Алматы 🏙️.
+* **World Spark** — войти в ТОП-100 глобального лидерборда.
+
+---
+
+## 📂 Структура Проекта (Project Structure)
+
+```text
 echo-dash/
 ├── index.html
 ├── package.json
 ├── vite.config.js
-└── src/
-    ├── main.jsx
-    ├── App.jsx                 # Screen routing + persistence
-    ├── styles.css              # Neon / glassmorphism design system
-    ├── components/
-    │   ├── MainMenu.jsx
-    │   ├── HowToPlay.jsx
-    │   ├── Settings.jsx
-    │   ├── SkinSelector.jsx
-    │   ├── GameCanvas.jsx      # Canvas host + HUD
-    │   ├── GameOver.jsx
-    │   └── VictoryScreen.jsx
-    └── game/
-        ├── engine.js           # rAF loop, physics, rendering
-        ├── levels.js           # Handcrafted Demo + Full levels
-        ├── collisions.js       # AABB + fair spike hitboxes
-        ├── particles.js        # Trail / burst / ambient particles
-        ├── replay.js           # Ghost record / sample / localStorage
-        ├── audio.js            # Web Audio synth music + SFX
-        └── constants.js        # Colors, skins, mood blending
+├── Dockerfile                  # Докер-файл сборки фронтенда на Nginx
+├── nginx.conf                  # Конфигурация Nginx для React Router SPA
+├── docker-compose.yml          # Общий Docker Compose оркестратор
+├── DEPLOY.md                   # Подробное руководство по деплою
+├── src/
+│   ├── main.jsx
+│   ├── App.jsx                 # Роутинг и авторизация
+│   ├── styles.css              # Дизайн-система (неон, глитч, стекломорфизм)
+│   ├── components/             # Интерактивные UI компоненты
+│   │   ├── GameCanvas.jsx      # Canvas-хост и HUD-панель
+│   │   ├── GameOver.jsx        # Экран смерти и Кладбище
+│   │   ├── Toasts.jsx          # Анимированные уведомления достижений
+│   │   └── SkinSelector.jsx    # Панель кастомизации кубика
+│   ├── pages/                  # Страницы приложения
+│   │   ├── HomePage.jsx        # Очищенное главное меню с дашбордом
+│   │   ├── ProfilePage.jsx     # Профиль, статистика смертей и таймлайн
+│   │   └── LeaderboardPage.jsx # Таблица лидеров (Глобальная/Страны/Регионы)
+│   └── game/                   # Игровая логика
+│       ├── engine.js           # Игровое ядро (физика, коллизии, рендеринг, Bullet Time)
+│       ├── audio.js            # Web Audio синтезатор и генератор саундтрека
+│       ├── levels.js           # Handcrafted-карты уровней и процедурный Mulberry32 генератор
+│       └── deathEchoes.js      # Локальное хранилище маркеров смертей
+└── backend/
+    ├── package.json
+    ├── Dockerfile              # Dockerfile для Node.js API
+    ├── prisma/
+    │   ├── schema.prisma       # База данных (SQLite/PostgreSQL)
+    │   └── seed.js             # Сид достижений и скинов
+    └── src/
+        ├── server.js           # Точка входа Express API
+        ├── controllers/        # Контроллеры (аналитика, лидерборды, реплеи)
+        └── services/
+            └── progression.js  # Валидация скинов и достижений в облаке
 ```
 
 ---
 
-## Signature features
+## 🛠️ Быстрый Старт (Quick Start)
 
-### Ghost Replay
-- Each run records `(distance, y, rotation)` every ~28 px of world travel.
-- When a new attempt exceeds the previous best %, the recording is saved to `localStorage`.
-- The ghost is sampled via binary search on world-x and drawn as a translucent cyan-white cube.
-- Ghost cannot collide — purely visual.
-- Toggleable in **Settings → Show Ghost**.
+### 1. Запуск Фронтенда локально:
+```bash
+# Установка зависимостей
+npm install
 
-### Beat Pulse World
-- A `beatPhase` accumulator driven by each mood zone's `pulseHz` (1.6 → 3.2 Hz).
-- Pulses cube glow, obstacle shadowBlur, background radial vignette, grid brightness, particle intensity, and the progress bar shine.
-- A synthetic 132 BPM track (kick + saw bass + hi-hat) generated entirely via Web Audio — no external assets.
+# Запуск в режиме разработки
+npm run dev
+```
+Откройте [http://localhost:5173](http://localhost:5173).
 
-### Level Mood System
-| Range    | Zone           | Primary | Notes                          |
-|----------|----------------|---------|--------------------------------|
-| 0 – 30%  | Blue Zone      | Cyan    | Calm pulse, gentle grid        |
-| 30 – 60% | Purple Glitch  | Magenta | Scanlines + glitch bar offsets |
-| 60 – 85% | Red Danger     | Red     | Faster pulse, stronger shake   |
-| 85 – 100%| White Finale   | White   | Speed boost, intense glow      |
+### 2. Запуск Бэкенда локально:
+```bash
+cd backend
 
-Colors smoothly blend in the last 15% of each zone for a seamless transition.
+# Установка зависимостей бэкенда
+npm install
 
----
+# Настройка переменных окружения
+cp .env.example .env
 
-## Skins
+# Применение базы данных Prisma и сид данных
+npx prisma generate
+npx prisma db push
+npm run seed
 
-4 selectable cube skins, persisted in `localStorage`:
-
-- **Cyan Core**
-- **Purple Pulse**
-- **Red Glitch**
-- **Gold Runner**
+# Запуск сервера
+npm run dev
+```
+Бэкенд запустится на порту `http://localhost:4000`.
 
 ---
 
-## Settings (all persisted)
+## 🐋 Быстрый запуск в Docker Compose (Full Stack)
 
-- Show Ghost
-- Sound & Music
-- Particles
-- Screen Shake
-- Reduced Motion
+Вы можете запустить готовое клиент-серверное приложение со связанной базой данных одной командой из корня репозитория:
 
----
-
-## Tech
-
-- **React 18** for UI screens / overlays
-- **Vite** for dev server & bundling
-- **Canvas 2D** for the entire game render (DPR-aware, letterboxed `1280 × 720` base resolution)
-- **Web Audio API** for synthetic music + SFX
-- **localStorage** for best %, attempts, skin, settings, ghost frames
-- `requestAnimationFrame` loop with `deltaTime`-based physics
-- Listeners/RAF cleaned up on unmount — no leaks
+```bash
+docker compose up -d --build
+```
+* **Фронтенд** будет доступен на порту `http://localhost:80`
+* **Бэкенд (API)** запустится на порту `http://localhost:4000`
 
 ---
 
-## License
+## 📜 Лицензия (License)
 
-Original art / code / audio. No copyrighted assets used. Free to fork for educational / competition demo purposes.
+Проект полностью открыт. Код, дизайн, процедурные синтезаторы звука и уровни написаны с нуля. Разрешается свободное копирование, доработка и использование в образовательных и демонстрационных целях.
+
+**Удачных забегов! Наберите максимальный ритм-стрик! 🚀**
